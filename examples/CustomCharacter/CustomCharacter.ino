@@ -1,47 +1,27 @@
 /*
-  LiquidCrystal Library - Custom Characters
+  This is an Example for the FaBo LCD I2C Brick.
 
- Demonstrates how to add custom characters on an LCD  display.
- The LiquidCrystal library works with all LCD displays that are
- compatible with the  Hitachi HD44780 driver. There are many of
- them out there, and you can usually tell them by the 16-pin interface.
-
- This sketch prints "I <heart> Arduino!" and a little dancing man
- to the LCD.
-
-  The circuit:
- * LCD RS pin to digital pin 12
- * LCD Enable pin to digital pin 11
- * LCD D4 pin to digital pin 5
- * LCD D5 pin to digital pin 4
- * LCD D6 pin to digital pin 3
- * LCD D7 pin to digital pin 2
- * LCD R/W pin to ground
- * 10K potentiometer:
- * ends to +5V and ground
- * wiper to LCD VO pin (pin 3)
- * 10K poterntiometer on pin A0
-
- created 21 Mar 2011
+ Library originally added 18 Apr 2008
+ by David A. Mellis
+ library modified 5 Jul 2009
+ by Limor Fried (http://www.ladyada.net)
+ example added 9 Jul 2009
  by Tom Igoe
- modified 11 Nov 2013
- by Scott Fitzgerald
-
- Based on Adafruit's example at
- https://github.com/adafruit/SPI_VFD/blob/master/examples/createChar/createChar.pde
+ modified 22 Nov 2010
+ by Tom Igoe
+ compatible library 23 Mar 2016
+ by Hideki Yamauchi
 
  This example code is in the public domain.
- http://www.arduino.cc/en/Tutorial/LiquidCrystal
 
- Also useful:
- http://icontexto.com/charactercreator/
-
+ http://fabo.io/212.html
  */
 
 // include the library code:
+#include <Wire.h>
 #include <FaBoLCD_PCF8574.h>
 
-// initialize the library with the numbers of the interface pins
+// initialize the library
 FaBoLCD_PCF8574 lcd;
 
 // make some custom characters:

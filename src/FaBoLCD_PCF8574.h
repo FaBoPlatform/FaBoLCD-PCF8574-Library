@@ -1,3 +1,15 @@
+/**
+ @file FaBoLCD_PCF8574.h
+ @brief This is a library for the FaBo LCD I2C Brick.
+
+   http://fabo.io/212.html
+
+   Released under APACHE LICENSE, VERSION 2.0
+
+   http://www.apache.org/licenses/
+
+ @author FaBo<info@fabo.io>
+*/
 
 #ifndef FABOLCD_PCF8574_H
 #define FABOLCD_PCF8574_H
@@ -6,7 +18,7 @@
 #include <Wire.h>
 #include "Print.h"
 
-#define PCF8574_SLAVE_ADDRESS 0x20 ///< Default I2C Slave Address
+#define PCF8574_SLAVE_ADDRESS 0x20 ///< PCF8574 Default I2C Slave Address
 
 // commands
 #define LCD_CLEARDISPLAY 0x01
@@ -56,6 +68,10 @@
 #define DB6 B01000000 // P6 : DB6 bit
 #define DB7 B10000000 // P7 : DB7 bit
 
+/**
+ @class FaBoLCDmini_AQM0802A
+ @brief FaBo LCD I2C Controll class
+*/
 class FaBoLCD_PCF8574 : public Print {
   public:
     FaBoLCD_PCF8574(uint8_t addr = PCF8574_SLAVE_ADDRESS);

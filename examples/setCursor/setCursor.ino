@@ -1,25 +1,5 @@
 /*
-  LiquidCrystal Library - setCursor
-
- Demonstrates the use a 16x2 LCD display.  The LiquidCrystal
- library works with all LCD displays that are compatible with the
- Hitachi HD44780 driver. There are many of them out there, and you
- can usually tell them by the 16-pin interface.
-
- This sketch prints to all the positions of the LCD using the
- setCursor() method:
-
-  The circuit:
- * LCD RS pin to digital pin 12
- * LCD Enable pin to digital pin 11
- * LCD D4 pin to digital pin 5
- * LCD D5 pin to digital pin 4
- * LCD D6 pin to digital pin 3
- * LCD D7 pin to digital pin 2
- * LCD R/W pin to ground
- * 10K resistor:
- * ends to +5V and ground
- * wiper to LCD VO pin (pin 3)
+  This is an Example for the FaBo LCD I2C Brick.
 
  Library originally added 18 Apr 2008
  by David A. Mellis
@@ -29,23 +9,25 @@
  by Tom Igoe
  modified 22 Nov 2010
  by Tom Igoe
+ compatible library 23 Mar 2016
+ by Hideki Yamauchi
 
  This example code is in the public domain.
 
- http://www.arduino.cc/en/Tutorial/LiquidCrystalSetCursor
-
+ http://fabo.io/212.html
  */
 
 // include the library code:
+#include <Wire.h>
 #include <FaBoLCD_PCF8574.h>
+
+// initialize the library
+FaBoLCD_PCF8574 lcd;
 
 // these constants won't change.  But you can change the size of
 // your LCD using them:
 const int numRows = 2;
 const int numCols = 16;
-
-// initialize the library with the numbers of the interface pins
-FaBoLCD_PCF8574 lcd;
 
 void setup() {
   // set up the LCD's number of columns and rows:

@@ -1,3 +1,15 @@
+/**
+ @file FaBoLCD_PCF8574.cpp
+ @brief This is a library for the FaBo LCD I2C Brick.
+
+   http://fabo.io/212.html
+
+   Released under APACHE LICENSE, VERSION 2.0
+
+   http://www.apache.org/licenses/
+
+ @author FaBo<info@fabo.io>
+*/
 
 #include "FaBoLCD_PCF8574.h"
 
@@ -20,6 +32,9 @@
 // can't assume that its in that state when a sketch starts (and the
 // LiquidCrystal constructor is called).
 
+/**
+ @brief Constructor
+*/
 FaBoLCD_PCF8574::FaBoLCD_PCF8574(uint8_t addr)
 {
   _i2caddr = addr;
@@ -28,11 +43,17 @@ FaBoLCD_PCF8574::FaBoLCD_PCF8574(uint8_t addr)
   init();
 }
 
+/**
+ @brief init
+*/
 void FaBoLCD_PCF8574::init()
 {
   _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
 }
 
+/**
+ @brief brgin
+*/
 void FaBoLCD_PCF8574::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
   if (lines > 1) {
     _displayfunction |= LCD_2LINE;
@@ -88,6 +109,9 @@ void FaBoLCD_PCF8574::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
 
 }
 
+/**
+ @brief setRowOffsets
+*/
 void FaBoLCD_PCF8574::setRowOffsets(int row0, int row1, int row2, int row3)
 {
   _row_offsets[0] = row0;
@@ -97,18 +121,28 @@ void FaBoLCD_PCF8574::setRowOffsets(int row0, int row1, int row2, int row3)
 }
 
 /********** high level commands, for the user! */
+
+/**
+ @brief clear
+*/
 void FaBoLCD_PCF8574::clear()
 {
   command(LCD_CLEARDISPLAY);  // clear display, set cursor position to zero
   delayMicroseconds(2000);  // this command takes a long time!
 }
 
+/**
+ @brief home
+*/
 void FaBoLCD_PCF8574::home()
 {
   command(LCD_RETURNHOME);  // set cursor position to zero
   delayMicroseconds(2000);  // this command takes a long time!
 }
 
+/**
+ @brief setCursor
+*/
 void FaBoLCD_PCF8574::setCursor(uint8_t col, uint8_t row)
 {
   const size_t max_lines = sizeof(_row_offsets) / sizeof(*_row_offsets);
@@ -122,70 +156,103 @@ void FaBoLCD_PCF8574::setCursor(uint8_t col, uint8_t row)
   command(LCD_SETDDRAMADDR | (col + _row_offsets[row]));
 }
 
-// Turn the display on/off (quickly)
+/**
+ @brief Turn the display off (quickly)
+*/
 void FaBoLCD_PCF8574::noDisplay() {
   _displaycontrol &= ~LCD_DISPLAYON;
   command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
+
+/**
+ @brief Turn the display on (quickly)
+*/
 void FaBoLCD_PCF8574::display() {
   _displaycontrol |= LCD_DISPLAYON;
   command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 
-// Turns the underline cursor on/off
+/**
+ @brief Turns the underline cursor off
+*/
 void FaBoLCD_PCF8574::noCursor() {
   _displaycontrol &= ~LCD_CURSORON;
   command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
+
+/**
+ @brief Turns the underline cursor on
+*/
 void FaBoLCD_PCF8574::cursor() {
   _displaycontrol |= LCD_CURSORON;
   command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 
-// Turn on and off the blinking cursor
+/**
+ @brief Turn off the blinking cursor
+*/
 void FaBoLCD_PCF8574::noBlink() {
   _displaycontrol &= ~LCD_BLINKON;
   command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
+
+/**
+ @brief Turn on the blinking cursor
+*/
 void FaBoLCD_PCF8574::blink() {
   _displaycontrol |= LCD_BLINKON;
   command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 
-// These commands scroll the display without changing the RAM
+/**
+ @brief These commands scroll the display without changing the RAM
+*/
 void FaBoLCD_PCF8574::scrollDisplayLeft(void) {
   command(LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVELEFT);
 }
+
+/**
+ @brief These commands scroll the display without changing the RAM
+*/
 void FaBoLCD_PCF8574::scrollDisplayRight(void) {
   command(LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVERIGHT);
 }
 
-// This is for text that flows Left to Right
+/**
+ @brief This is for text that flows Left to Right
+*/
 void FaBoLCD_PCF8574::leftToRight(void) {
   _displaymode |= LCD_ENTRYLEFT;
   command(LCD_ENTRYMODESET | _displaymode);
 }
 
-// This is for text that flows Right to Left
+/**
+ @brief This is for text that flows Right to Left
+*/
 void FaBoLCD_PCF8574::rightToLeft(void) {
   _displaymode &= ~LCD_ENTRYLEFT;
   command(LCD_ENTRYMODESET | _displaymode);
 }
 
-// This will 'right justify' text from the cursor
+/**
+ @brief This will 'right justify' text from the cursor
+*/
 void FaBoLCD_PCF8574::autoscroll(void) {
   _displaymode |= LCD_ENTRYSHIFTINCREMENT;
   command(LCD_ENTRYMODESET | _displaymode);
 }
 
-// This will 'left justify' text from the cursor
+/**
+ @brief This will 'left justify' text from the cursor
+*/
 void FaBoLCD_PCF8574::noAutoscroll(void) {
   _displaymode &= ~LCD_ENTRYSHIFTINCREMENT;
   command(LCD_ENTRYMODESET | _displaymode);
 }
 
-// Allows us to fill the first 8 CGRAM locations
-// with custom characters
+/**
+ @brief Allows us to fill the first 8 CGRAM locations with custom characters
+*/
 void FaBoLCD_PCF8574::createChar(uint8_t location, uint8_t charmap[]) {
   location &= 0x7; // we only have 8 locations 0-7
   command(LCD_SETCGRAMADDR | (location << 3));
@@ -196,10 +263,16 @@ void FaBoLCD_PCF8574::createChar(uint8_t location, uint8_t charmap[]) {
 
 /*********** mid level commands, for sending data/cmds */
 
+/**
+ @brief command
+*/
 inline void FaBoLCD_PCF8574::command(uint8_t value) {
   send(value, 0);
 }
 
+/**
+ @brief write
+*/
 inline size_t FaBoLCD_PCF8574::write(uint8_t value) {
   send(value, RS);
   return 1; // assume sucess
@@ -207,7 +280,9 @@ inline size_t FaBoLCD_PCF8574::write(uint8_t value) {
 
 /************ low level data pushing commands **********/
 
-// write either command or data, 4-bit
+/**
+ @brief write either command or data, 4-bit
+*/
 void FaBoLCD_PCF8574::send(uint8_t value, uint8_t mode) {
   uint8_t Hbit = value & 0xF0;
   uint8_t Lbit = (value << 4) & 0xF0;
@@ -215,6 +290,9 @@ void FaBoLCD_PCF8574::send(uint8_t value, uint8_t mode) {
   write4bits(Lbit|mode);
 }
 
+/**
+ @brief pulseEnable
+*/
 void FaBoLCD_PCF8574::pulseEnable(uint8_t value) {
   writeI2c(value & ~EN); // EN LOW
   delayMicroseconds(1);
@@ -224,11 +302,17 @@ void FaBoLCD_PCF8574::pulseEnable(uint8_t value) {
   delayMicroseconds(100); // commands need > 37us to settle
 }
 
+/**
+ @brief write4bits
+*/
 void FaBoLCD_PCF8574::write4bits(uint8_t value) {
   writeI2c(value);
   pulseEnable(value);
 }
 
+/**
+ @brief writeI2c
+*/
 void FaBoLCD_PCF8574::writeI2c(uint8_t data) {
   Wire.beginTransmission(_i2caddr);
   Wire.write(data|_backlight);
